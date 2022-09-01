@@ -1,0 +1,25 @@
+body {
+    background-color: grey;
+}
+
+#market {
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+}
+
+#news {
+    float: right;
+    width: 20%;
+    border-style:solid;
+    margin: 1%;
+    padding: 1%;
+    border-color: black;
+}
+
+.newspreview {
+    border-style: solid;
+    border-width: 1px;
+    border-collapse: collapse;
+
+}
