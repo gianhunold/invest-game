@@ -6,24 +6,27 @@
         <link rel="stylesheet" href="./css/stylesheet.css">
         <script src="./js/marketupdate.js"></script>
     </head>
-    <body onload="priceUpdate()">
+    <body onload="marketupdate()">
         <h1 id="titel">Investment Game</h1>
+        <div id="account">
+            100
+        </div>
         <div id="market">
             <table id="marketview">
                 <tr>
                     <th>Aktie</th>
                     <th>Preis</th>
                 </tr>
-                <tr>
-                    <td>Test 1</td>
+                <tr onclick="changeView_Aktie('Aktie1','12');">
+                    <td>Aktie 1</td>
                     <td>12</td>
                 </tr>
                 <tr>
-                    <td>Test 2</td>
+                    <td>Aktie 2</td>
                     <td>14</td>
                 </tr>
                 <tr>
-                    <td>Test 3</td>
+                    <td>Aktie 3</td>
                     <td>21</td>   
                 </tr>                           
             </table>
@@ -43,7 +46,12 @@
                 <p>Mit ihrem neusten Waffensystem hat Waffen Keller den Markt überzeug, es wurden bereits mehr als 500 Stück vorbestellt.</p>
 
             </div>
-
+        </div>
+        <div id="aktienansicht">
+            <h2 id="aktienname"></h2>
+            <button id="aktieverkaufen">Verkaufen</button>
+            <button id="aktiekaufen" onclick="aktiekaufen()">Kaufen</button>   
+            <p id="aktienpreis"></p>         
         </div>
     </body>
 </html>
