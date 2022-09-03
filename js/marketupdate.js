@@ -1,13 +1,17 @@
-const anteile = [0,0,0]
+const anteile = [0,0,0,0] /*First Place in Array not used*/
 
 function marketupdate() {
-    setInterval(priceUpdate, 1000);
+    setInterval(priceUpdate, 1000, 1);
+    setInterval(priceUpdate, 1000, 2);
+    setInterval(priceUpdate, 1000, 3);
+    setInterval(priceUpdate, 1000, 4);
+    setInterval(priceUpdate, 1000, 5);
 }
 
-function priceUpdate() {
+function priceUpdate(listid) {
 
     var priceTable = document.getElementById("marketview");
-    var currentprice = Number(priceTable.rows[1].cells[1].innerHTML);
+    var currentprice = Number(priceTable.rows[listid].cells[1].innerHTML);
     var newprice = 0;
 
     var change = Math.floor(Math.random() * 10);
@@ -26,18 +30,18 @@ function priceUpdate() {
         newprice = 1;
     }
 
-    priceTable.rows[1].cells[1].classList.remove("priceinc");
-    priceTable.rows[1].cells[1].classList.remove("pricedec");
+    priceTable.rows[listid].cells[1].classList.remove("priceinc");
+    priceTable.rows[listid].cells[1].classList.remove("pricedec");
 
     if (currentprice < newprice)
     {
-        priceTable.rows[1].cells[1].innerHTML = newprice;
-        priceTable.rows[1].cells[1].classList.add("priceinc");
+        priceTable.rows[listid].cells[1].innerHTML = newprice;
+        priceTable.rows[listid].cells[1].classList.add("priceinc");
     }
     if (currentprice > newprice)
     {
-        priceTable.rows[1].cells[1].innerHTML = newprice;
-        priceTable.rows[1].cells[1].classList.add("pricedec");
+        priceTable.rows[listid].cells[1].innerHTML = newprice;
+        priceTable.rows[listid].cells[1].classList.add("pricedec");
     }
 }
 
@@ -45,6 +49,13 @@ function changeView_Aktie(listid) {
     document.getElementById("market").style.display = "none";
     document.getElementById("news").style.display = "none";
     document.getElementById("aktienansicht").style.display = "block";
+
+    /*Add functional Elements*/
+    document.getElementById("aktienansicht").innerHTML += "<h2 id='aktienname'></h2>";
+    document.getElementById("aktienansicht").innerHTML += "<button id='back' onclick='exitaktie(" + listid + ")'>Zurück</button>";
+    document.getElementById("aktienansicht").innerHTML += "<button id='aktieverkaufen' onclick='aktieverkaufen(" + listid +")'>Verkaufen</button>";
+    document.getElementById("aktienansicht").innerHTML += "<button id='aktiekaufen' onclick='aktiekaufen(" + listid + ")'>Kaufen</button>";
+    document.getElementById("aktienansicht").innerHTML += "<p id='aktienpreis'></p>";
 
     var aktienname = document.getElementById("marketview").rows[listid].cells[0].innerHTML;
     var preis = Number(document.getElementById("marketview").rows[listid].cells[1].innerHTML);
@@ -58,14 +69,14 @@ function insuficentfunds() {
     setTimeout(() => {  document.getElementById("account").style.color = "black"; }, 1000);
 }
 
-function aktiekaufen() {
+function aktiekaufen(listid) {
     var aktienpreis = Number(document.getElementById("aktienpreis").innerHTML);
     var kontostand = Number(document.getElementById("account").innerHTML);
 
     if (kontostand > aktienpreis) {
         kontostand = kontostand - aktienpreis;
         document.getElementById("account").innerHTML = kontostand;
-        anteile[0] = anteile[0] + 1;
+        anteile[listid] = anteile[listid] + 1;
     }
 
     if (kontostand < aktienpreis) {
@@ -74,22 +85,24 @@ function aktiekaufen() {
 
 }
 
-function aktieverkaufen() {
+function aktieverkaufen(listid) {
     var aktienpreis = Number(document.getElementById("aktienpreis").innerHTML);
     var kontostand = Number(document.getElementById("account").innerHTML);
 
-    if (anteile[0] >= 1) 
+    if (anteile[listid] >= 1) 
     {
         kontostand = kontostand + aktienpreis;
         document.getElementById("account").innerHTML = kontostand;
-        anteile[0] = anteile[0] - 1;
+        anteile[listid] = anteile[listid] - 1;
     }
 }
 
-function exitaktie() {
+function exitaktie(listid) {
     document.getElementById("market").style.display = "block";
     document.getElementById("news").style.display = "block";
     document.getElementById("aktienansicht").style.display = "none";
 
-    document.getElementById("marketview").rows[1].cells[2].innerHTML = anteile[0];
+    document.getElementById("aktienansicht").innerHTML = "";
+
+    document.getElementById("marketview").rows[listid].cells[2].innerHTML = anteile[listid];
 }

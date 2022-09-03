@@ -32,7 +32,17 @@
                     <td>Aktie 3</td>
                     <td>21</td>   
                     <td>0</td>
-                </tr>                           
+                </tr>
+                <tr onclick="changeView_Aktie('4');">
+                    <td>Aktie 4</td>
+                    <td>150</td>   
+                    <td>0</td>
+                </tr>
+                <tr onclick="changeView_Aktie('5');">
+                    <td>Aktie 5</td>
+                    <td>1000</td>   
+                    <td>0</td>
+                </tr>                         
             </table>
         </div>
         <div id="news">
@@ -52,11 +62,6 @@
             </div>
         </div>
         <div id="aktienansicht">
-            <h2 id="aktienname"></h2>
-            <button id="back" onclick="exitaktie()">Zurück</button>
-            <button id="aktieverkaufen" onclick="aktieverkaufen()">Verkaufen</button>
-            <button id="aktiekaufen" onclick="aktiekaufen()">Kaufen</button>   
-            <p id="aktienpreis"></p>         
         </div>
     </body>
 </html>
