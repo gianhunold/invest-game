@@ -1,4 +1,4 @@
-const anteile = [0,0,0,0] /*First Place in Array not used*/
+const anteile = [0,0,0,0,0,0] /*First Place in Array not used*/
 
 function marketupdate() {
     setInterval(priceUpdate, 1000, 1);
