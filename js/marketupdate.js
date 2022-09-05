@@ -1,6 +1,7 @@
+var graph;
 const anteile = [0,0,0,0,0,0] /*First Place in Array not used*/
 
-const aktie1prices = [0,0,0,0,0,0,0,0,0,0]
+const aktienmaster = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]
 
 function marketupdate() {
     setInterval(priceUpdate, 1000, 1);
@@ -11,7 +12,6 @@ function marketupdate() {
 }
 
 function priceUpdate(listid) {
-
     var priceTable = document.getElementById("marketview");
     var currentprice = Number(priceTable.rows[listid].cells[1].innerHTML);
     var newprice = 0;
@@ -46,19 +46,16 @@ function priceUpdate(listid) {
         priceTable.rows[listid].cells[1].classList.add("pricedec");
     }
 
-    if (listid == 1)
-    {
-        aktie1prices[0] = aktie1prices[1];
-        aktie1prices[1] = aktie1prices[2];
-        aktie1prices[2] = aktie1prices[3];
-        aktie1prices[3] = aktie1prices[4];
-        aktie1prices[4] = aktie1prices[5];
-        aktie1prices[5] = aktie1prices[6];
-        aktie1prices[6] = aktie1prices[7];
-        aktie1prices[7] = aktie1prices[8];
-        aktie1prices[8] = aktie1prices[9]; 
-        aktie1prices[9] = newprice;
-    }
+        aktienmaster[listid][0] = aktienmaster[listid][1];
+        aktienmaster[listid][1] = aktienmaster[listid][2];
+        aktienmaster[listid][2] = aktienmaster[listid][3];
+        aktienmaster[listid][3] = aktienmaster[listid][4];
+        aktienmaster[listid][4] = aktienmaster[listid][5];
+        aktienmaster[listid][5] = aktienmaster[listid][6];
+        aktienmaster[listid][6] = aktienmaster[listid][7];
+        aktienmaster[listid][7] = aktienmaster[listid][8];
+        aktienmaster[listid][8] = aktienmaster[listid][9]; 
+        aktienmaster[listid][9] = newprice;
 }
 
 function changeView_Aktie(listid) {
@@ -80,7 +77,7 @@ function changeView_Aktie(listid) {
     document.getElementById("aktienname").innerHTML = aktienname;
     document.getElementById("aktienpreis").innerHTML = preis;
 
-    setInterval(updateaktienview, 1000, listid);
+    graph = setInterval(updateaktienview, 1000, listid);
 }
 
 function insuficentfunds() {
@@ -124,29 +121,38 @@ function exitaktie(listid) {
     document.getElementById("aktienansicht").innerHTML = "";
 
     document.getElementById("marketview").rows[listid].cells[2].innerHTML = anteile[listid];
+
+    clearInterval(graph);
 }
 
-function drawgraph() {
-    var canvas = document.getElementById("aktiengraph");
+function drawgraph(listid) {
 
+    var canvas = document.getElementById("aktiengraph");
     var ctx = canvas.getContext("2d");
+
+    // get hightest Value
+    const highest = Math.max(...aktienmaster[listid]);
+    // get lowest Value
+    const lowest = Math.min(...aktienmaster[listid]);
+
+    var diff = highest -lowest;
 
     ctx.clearRect(0, 0, 250, 150);
     var i = 0;
     while (i < 10)
     {
         ctx.beginPath();
-        ctx.moveTo(i * 25, 150 - aktie1prices[i]);
-        ctx.lineTo((i+1) * 25, 150 - aktie1prices[i+1]);
-        if (aktie1prices[i+1] > aktie1prices[i])
+        ctx.moveTo(i * 25, 100 - ((aktienmaster[listid][i] - lowest)/diff * 10));
+        ctx.lineTo((i+1) * 25, 100 - ((aktienmaster[listid][i+1] - lowest)/diff * 10));
+        if (aktienmaster[listid][i+1] > aktienmaster[listid][i])
         {
             ctx.strokeStyle = '#49FF00';
         }
-        else if (aktie1prices[i+1] < aktie1prices[i])
+        else if (aktienmaster[listid][i+1] < aktienmaster[listid][i])
         {
             ctx.strokeStyle = '#FF0000';
         }
-        else if (aktie1prices[i+1] == aktie1prices[i])
+        else if (aktienmaster[listid][i+1] == aktienmaster[listid][i])
         {
             ctx.strokeStyle = '#000000';
         }
@@ -156,7 +162,8 @@ function drawgraph() {
 }
 
 function updateaktienview(listid) {
-    drawgraph();
+    drawgraph(listid);
+    console.log("graph");
     var preis = Number(document.getElementById("marketview").rows[listid].cells[1].innerHTML);
     document.getElementById("aktienpreis").innerHTML = preis;
 }
