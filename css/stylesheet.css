@@ -76,6 +76,15 @@ body {
     height: 70%;
 }
 
+#back {
+    float: right;
+    top: 5%;
+}
+
+#aktienorder {
+    border-style: solid;
+}
+
 .newspreview {
     border-style: solid;
     border-width: 1px;
