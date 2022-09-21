@@ -72,7 +72,7 @@ function changeView_Aktie(listid) {
     document.getElementById("aktienorder").innerHTML += "<p id='createorder'>Order Erstellen</p>";
     document.getElementById("aktienorder").innerHTML += "<input type='radio' name='operation' value='buy' checked>Kaufen</input>";
     document.getElementById("aktienorder").innerHTML += "<input type='radio' name='operation' value='sell'>Verkaufen</input>";
-    document.getElementById("aktienorder").innerHTML += "<input type='number' value='1'></input>";
+    document.getElementById("aktienorder").innerHTML += "<input type='number' name='count' value='1'></input>";
     document.getElementById("aktienorder").innerHTML += "<input type='button' value='Place Order' onclick='aktienorder(" + listid + ")'></input>";
     document.getElementById("aktienorder").innerHTML += "<p id='aktienpreis'></p>";
 
@@ -93,15 +93,18 @@ function insuficentfunds() {
 function aktienorder(listid)
 {
     var operation = document.querySelector('input[name="operation"]:checked').value;
-    var aktienpreis = Number(document.getElementById("aktienpreis").innerHTML);
+    var ammount = document.querySelector('input[name="count"]').value;
+    var aktiengrundpreis = Number(document.getElementById("aktienpreis").innerHTML);
     var kontostand = Number(document.getElementById("account").innerHTML);
 
+    var aktienpreis = aktiengrundpreis * ammount;
+
     if (operation == "buy")
-    {    
+    {   
         if (kontostand >= aktienpreis) {
             kontostand = kontostand - aktienpreis;
             document.getElementById("account").innerHTML = kontostand;
-            anteile[listid] = anteile[listid] + 1;
+            anteile[listid] = anteile[listid] + Number(ammount);
         }
     
         if (kontostand < aktienpreis) {
@@ -109,23 +112,23 @@ function aktienorder(listid)
         } 
     } else if (operation == "sell")
     {    
-        if (anteile[listid] >= 1) 
+        if (anteile[listid] >= ammount) 
         {
             kontostand = kontostand + aktienpreis;
             document.getElementById("account").innerHTML = kontostand;
-            anteile[listid] = anteile[listid] - 1;
+            anteile[listid] = anteile[listid] - Number(ammount);
         }
     }    
 
 }
 
 function exitaktie(listid) {
+
     document.getElementById("market").style.display = "block";
     //document.getElementById("news").style.display = "block";
     document.getElementById("aktienansicht").style.display = "none";
 
     document.getElementById("aktienansicht").innerHTML = "";
-    document.getElementById("aktienorder").innerHTML = "";
 
     document.getElementById("marketview").rows[listid].cells[2].innerHTML = anteile[listid];
 
