@@ -61,6 +61,7 @@ function priceUpdate(listid) {
 function changeView_Aktie(listid) {
     document.getElementById("market").style.display = "none";
     document.getElementById("aktienansicht").style.display = "block";
+    document.getElementById("orderhistory").style.display = "block";
 
     /*Add functional Elements*/
     document.getElementById("aktienansicht").innerHTML += "<h2 id='aktienname'></h2>";
@@ -96,6 +97,14 @@ function aktienorder(listid)
     var aktiengrundpreis = Number(document.getElementById("aktienpreis").innerHTML);
     var kontostand = Number(document.getElementById("account").innerHTML);
 
+    var currentdate = new Date(); 
+    var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+
     var aktienpreis = aktiengrundpreis * ammount;
 
     if (operation == "buy")
@@ -104,6 +113,7 @@ function aktienorder(listid)
             kontostand = kontostand - aktienpreis;
             document.getElementById("account").innerHTML = kontostand;
             anteile[listid] = anteile[listid] + Number(ammount);
+            document.getElementById("orderhistory").innerHTML ="<p>" + datetime + " Aktie1 gekauft " + ammount + " x Mal zu " + aktiengrundpreis + "</p>" + document.getElementById("orderhistory").innerHTML;
         }
     
         if (kontostand < aktienpreis) {
@@ -116,6 +126,7 @@ function aktienorder(listid)
             kontostand = kontostand + aktienpreis;
             document.getElementById("account").innerHTML = kontostand;
             anteile[listid] = anteile[listid] - Number(ammount);
+            document.getElementById("orderhistory").innerHTML ="<p>" + datetime + " Aktie1 verkauft " + ammount + " x Mal zu " + aktiengrundpreis + "</p>" + document.getElementById("orderhistory").innerHTML;
         }
     }    
 
@@ -124,8 +135,8 @@ function aktienorder(listid)
 function exitaktie(listid) {
 
     document.getElementById("market").style.display = "block";
-    //document.getElementById("news").style.display = "block";
     document.getElementById("aktienansicht").style.display = "none";
+    document.getElementById("orderhistory").style.display = "none";
 
     document.getElementById("aktienansicht").innerHTML = "";
 
