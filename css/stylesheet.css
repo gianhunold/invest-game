@@ -33,7 +33,7 @@ body {
     border-style: solid;
     float: left;
     border-width: 2px;
-    width: 80%;
+    width: 75%;
     height: 85%;
     padding: 1%;
 }
@@ -74,7 +74,7 @@ body {
 
 #orderhistory {
     float:  right;
-    width: 15%;
+    width: 20%;
     top: 1%;
     height: 90%;
     overflow: hidden;

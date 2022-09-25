@@ -113,7 +113,7 @@ function aktienorder(listid)
             kontostand = kontostand - aktienpreis;
             document.getElementById("account").innerHTML = kontostand;
             anteile[listid] = anteile[listid] + Number(ammount);
-            document.getElementById("orderhistory").innerHTML ="<p>" + datetime + " Aktie1 gekauft " + ammount + " x Mal zu " + aktiengrundpreis + "</p>" + document.getElementById("orderhistory").innerHTML;
+            document.getElementById("orderhistory").innerHTML ="<p class='priceinc'>" + datetime + " Aktie " + listid + " gekauft " + ammount + " x Mal zu " + aktiengrundpreis + "</p>" + document.getElementById("orderhistory").innerHTML;
         }
     
         if (kontostand < aktienpreis) {
@@ -126,7 +126,7 @@ function aktienorder(listid)
             kontostand = kontostand + aktienpreis;
             document.getElementById("account").innerHTML = kontostand;
             anteile[listid] = anteile[listid] - Number(ammount);
-            document.getElementById("orderhistory").innerHTML ="<p>" + datetime + " Aktie1 verkauft " + ammount + " x Mal zu " + aktiengrundpreis + "</p>" + document.getElementById("orderhistory").innerHTML;
+            document.getElementById("orderhistory").innerHTML ="<p class='pricedec'>" + datetime + " Aktie " + listid + " verkauft " + ammount + " x Mal zu " + aktiengrundpreis + "</p>" + document.getElementById("orderhistory").innerHTML;
         }
     }    
 
