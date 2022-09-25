@@ -2,10 +2,6 @@ body {
     background-color: grey;
 }   
 
-#titel {
-
-}
-
 #account {
     float: right;
 }
@@ -31,16 +27,6 @@ body {
 #marketview tr:nth-child(even) {
     background-color: #6a6a6a;
   }
-
-#news {
-    float: right;
-    width: 20%;
-    border-style:solid;
-    margin: 1%;
-    padding: 1%;
-    border-color: black;
-    height: 90%;
-}
 
 #aktienansicht{
     display: none;
@@ -83,15 +69,6 @@ body {
 
 #aktienorder {
     border-style: solid;
-}
-
-.newspreview {
-    border-style: solid;
-    border-width: 1px;
-    border-collapse: collapse;
-    overflow: hidden;
-    height: 33%;
-
 }
 
 .priceinc {

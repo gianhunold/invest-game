@@ -60,7 +60,6 @@ function priceUpdate(listid) {
 
 function changeView_Aktie(listid) {
     document.getElementById("market").style.display = "none";
-    //document.getElementById("news").style.display = "none";
     document.getElementById("aktienansicht").style.display = "block";
 
     /*Add functional Elements*/
@@ -68,7 +67,7 @@ function changeView_Aktie(listid) {
     document.getElementById("aktienansicht").innerHTML += "<canvas id='aktiengraph'></canvas>"
     document.getElementById("aktienansicht").innerHTML += "<button id='back' onclick='exitaktie(" + listid + ")'>Zurück</button>";
     document.getElementById("aktienansicht").innerHTML += "<div id='aktienorder'></div>";
-
+    /*Add Elements for ordering*/
     document.getElementById("aktienorder").innerHTML += "<p id='createorder'>Order Erstellen</p>";
     document.getElementById("aktienorder").innerHTML += "<input type='radio' name='operation' value='buy' checked>Kaufen</input>";
     document.getElementById("aktienorder").innerHTML += "<input type='radio' name='operation' value='sell'>Verkaufen</input>";
