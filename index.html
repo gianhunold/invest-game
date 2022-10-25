@@ -4,13 +4,32 @@
             Investment Game
         </title>
         <link rel="stylesheet" href="./css/stylesheet.css">
-        <meta charset="utf-8">
         <script type="text/javascript" src="./js/marketupdate.js"></script>
+        <script type="text/javascript" src="aktien.json"></script>
+        <meta charset="utf-8">
     </head>
     <body onload="marketupdate()">
         <h1 id="titel">Investment Game</h1>
         <div id="account">
-            100
+            <h1>Dashboard</h1>
+            <h2>Kontostand:</h2>
+            <h3>Geld:</h3>
+            <p id="geld">100</p>
+            <h3>Finanzrahmen:</h3>
+            <p id="finanzrahmen">100</p>
+            <h2>Portfolio</h2>
+            <table id="portfolio">
+
+            </table>
+            <h2>Offene Orders</h2>
+            <table id="orders">
+                <tr>
+                    <th>Aktion</th>
+                    <th>Firma</th>
+                    <th>Anzahl</th>
+                    <th>Einzelpreis</th>
+                </tr>
+            </table>
         </div>
         <div id="market">
             <table id="marketview">
@@ -48,9 +67,6 @@
         </div>
         </div>
         <div id="aktienansicht">
-        </div>
-        <div id='orderhistory'>
-
         </div>
     </body>
 </html>

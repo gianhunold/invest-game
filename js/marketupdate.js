@@ -1,4 +1,5 @@
 var graph;
+var ordernmr = 0;
 const anteile = [0,0,0,0,0,0] /*First Place in Array not used*/
 
 const aktienmaster = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]
@@ -9,6 +10,48 @@ function marketupdate() {
     setInterval(priceUpdate, 1000, 3);
     setInterval(priceUpdate, 1000, 4);
     setInterval(priceUpdate, 1000, 5);
+}
+
+function checkorders() {
+    var orderstable = document.getElementById("orders");
+    var priceTable = document.getElementById("marketview");
+    var geld = Number(document.getElementById("geld").innerHTML);
+
+    var aktienpreise = [0,0,0,0,0,0];
+
+    aktienpreise[1] = priceTable.rows[1].cells[1].innerHTML;
+    aktienpreise[2] = priceTable.rows[2].cells[1].innerHTML;
+    aktienpreise[3] = priceTable.rows[3].cells[1].innerHTML;
+    aktienpreise[4] = priceTable.rows[4].cells[1].innerHTML;
+    aktienpreise[5] = priceTable.rows[5].cells[1].innerHTML;
+
+    //Fullfill Buy Orders
+    var i = 1;
+
+    while (i <= ordernmr)
+    {
+        var option = orderstable.rows[i].cells[0].innerHTML;
+        if (option == "B")
+        {
+            var aktie = orderstable.rows[i].cells[1].innerHTML;
+            var preis = orderstable.rows[i].cells[3].innerHTML;
+            var aktienammount = orderstable.rows[i].cells[2].innerHTML;
+
+            if (aktienpreise[aktie] <= preis)
+            {
+                orderstable.deleteRow(i);
+                geld = geld - (preis * aktienammount);
+                var newtotal = Number(anteile[i]) + Number(aktienammount);
+                alert(newtotal);
+                anteile[i] = newtotal;
+                document.getElementById("geld").innerHTML = geld;
+                ordernmr = ordernmr - 1;
+
+            }
+
+        }
+        i = i+1;
+    }
 }
 
 function priceUpdate(listid) {
@@ -56,28 +99,36 @@ function priceUpdate(listid) {
         aktienmaster[listid][7] = aktienmaster[listid][8];
         aktienmaster[listid][8] = aktienmaster[listid][9]; 
         aktienmaster[listid][9] = newprice;
+
+        checkorders();
 }
 
 function changeView_Aktie(listid) {
+
+    var aktienname = document.getElementById("marketview").rows[listid].cells[0].innerHTML;
+    var preis = Number(document.getElementById("marketview").rows[listid].cells[1].innerHTML);
+
     document.getElementById("market").style.display = "none";
+    //document.getElementById("news").style.display = "none";
     document.getElementById("aktienansicht").style.display = "block";
-    document.getElementById("orderhistory").style.display = "block";
 
     /*Add functional Elements*/
     document.getElementById("aktienansicht").innerHTML += "<h2 id='aktienname'></h2>";
     document.getElementById("aktienansicht").innerHTML += "<canvas id='aktiengraph'></canvas>"
     document.getElementById("aktienansicht").innerHTML += "<button id='back' onclick='exitaktie(" + listid + ")'>Zurück</button>";
     document.getElementById("aktienansicht").innerHTML += "<div id='aktienorder'></div>";
-    /*Add Elements for ordering*/
+
     document.getElementById("aktienorder").innerHTML += "<p id='createorder'>Order Erstellen</p>";
     document.getElementById("aktienorder").innerHTML += "<input type='radio' name='operation' value='buy' checked>Kaufen</input>";
     document.getElementById("aktienorder").innerHTML += "<input type='radio' name='operation' value='sell'>Verkaufen</input>";
+    document.getElementById("aktienorder").innerHTML += "<label>Anzahl</label>";
     document.getElementById("aktienorder").innerHTML += "<input type='number' name='count' value='1'></input>";
+    document.getElementById("aktienorder").innerHTML += "<label>Max Preis</label>";
+    document.getElementById("aktienorder").innerHTML += "<input type='number' name='max-price' value='" + preis + "'></input>";
     document.getElementById("aktienorder").innerHTML += "<input type='button' value='Place Order' onclick='aktienorder(" + listid + ")'></input>";
     document.getElementById("aktienorder").innerHTML += "<p id='aktienpreis'></p>";
 
-    var aktienname = document.getElementById("marketview").rows[listid].cells[0].innerHTML;
-    var preis = Number(document.getElementById("marketview").rows[listid].cells[1].innerHTML);
+
 
     document.getElementById("aktienname").innerHTML = aktienname;
     document.getElementById("aktienpreis").innerHTML = preis;
@@ -86,34 +137,38 @@ function changeView_Aktie(listid) {
 }
 
 function insuficentfunds() {
-    document.getElementById("account").style.color = "red";
-    setTimeout(() => {  document.getElementById("account").style.color = "black"; }, 1000);
+    document.getElementById("finanzrahmen").style.color = "red";
+    setTimeout(() => {  document.getElementById("finanzrahmen").style.color = "black"; }, 1000);
 }
 
 function aktienorder(listid)
 {
+    ordernmr++;
     var operation = document.querySelector('input[name="operation"]:checked').value;
     var ammount = document.querySelector('input[name="count"]').value;
-    var aktiengrundpreis = Number(document.getElementById("aktienpreis").innerHTML);
-    var kontostand = Number(document.getElementById("account").innerHTML);
+    var preis = document.querySelector('input[name="max-price"]').value;
+    var kontostand = Number(document.getElementById("finanzrahmen").innerHTML);
+    
 
-    var currentdate = new Date(); 
-    var datetime = currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
+    var ordertable = document.getElementById("orders");
+    var row = ordertable.insertRow(ordernmr);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
 
-    var aktienpreis = aktiengrundpreis * ammount;
+    var aktienpreis = preis * ammount;
 
     if (operation == "buy")
     {   
         if (kontostand >= aktienpreis) {
             kontostand = kontostand - aktienpreis;
-            document.getElementById("account").innerHTML = kontostand;
-            anteile[listid] = anteile[listid] + Number(ammount);
-            document.getElementById("orderhistory").innerHTML ="<p class='priceinc'>" + datetime + " Aktie " + listid + " gekauft " + ammount + " x Mal zu " + aktiengrundpreis + "</p>" + document.getElementById("orderhistory").innerHTML;
+            document.getElementById("finanzrahmen").innerHTML = kontostand;
+
+            cell1.innerHTML = "B";
+            cell2.innerHTML = listid;
+            cell3.innerHTML = ammount;
+            cell4.innerHTML = preis;
         }
     
         if (kontostand < aktienpreis) {
@@ -123,10 +178,10 @@ function aktienorder(listid)
     {    
         if (anteile[listid] >= ammount) 
         {
-            kontostand = kontostand + aktienpreis;
-            document.getElementById("account").innerHTML = kontostand;
-            anteile[listid] = anteile[listid] - Number(ammount);
-            document.getElementById("orderhistory").innerHTML ="<p class='pricedec'>" + datetime + " Aktie " + listid + " verkauft " + ammount + " x Mal zu " + aktiengrundpreis + "</p>" + document.getElementById("orderhistory").innerHTML;
+            cell1.innerHTML = "S";
+            cell2.innerHTML = listid;
+            cell3.innerHTML = ammount;
+            cell4.innerHTML = preis;
         }
     }    
 
@@ -136,7 +191,6 @@ function exitaktie(listid) {
 
     document.getElementById("market").style.display = "block";
     document.getElementById("aktienansicht").style.display = "none";
-    document.getElementById("orderhistory").style.display = "none";
 
     document.getElementById("aktienansicht").innerHTML = "";
 
